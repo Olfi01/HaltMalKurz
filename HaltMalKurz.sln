@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TGBotVersionControl", "TGBotVersionControl\TGBotVersionControl.csproj", "{ED4FF244-DB05-44FD-894D-C3ED8B687BCE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HaltMalKurzControl", "TGBotVersionControl\HaltMalKurzControl.csproj", "{ED4FF244-DB05-44FD-894D-C3ED8B687BCE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
