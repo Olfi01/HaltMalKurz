@@ -25,16 +25,9 @@ namespace HaltMalKurzNode.Commands
             var msg = context.Message;
             var db = context.DB;
             await Bot.SendTextMessageAsync(msg.Chat.Id, "Hallo! Schön, dass du mit mir spielen willst!");
-            if (db.Users.Find(msg.From.Id) == null) db.Users.Add(BotUser.FromUser(msg.From));
+            /*if (db.Users.Find(msg.From.Id) == null) db.Users.Add(BotUser.FromUser(msg.From));
             db.Users.Find(msg.From.Id).Update(msg.From);
-            db.SaveChanges();
-        }
-
-        [Command("/throw", ProcessOnAllNodes = false, Standalone = true, RequiredContext = CommandAttribute.Context.Private)]
-        public static async Task Throw(CommandContext context)
-        {
-            await Task.CompletedTask;
-            throw new Exception("BÄH");
+            db.SaveChanges();*/
         }
     }
 }
