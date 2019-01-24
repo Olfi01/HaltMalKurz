@@ -29,5 +29,14 @@ namespace HaltMalKurzNode.Commands
             db.Users.Find(msg.From.Id).Update(msg.From);
             db.SaveChanges();
         }
+
+        [Command("/GA", ProcessOnAllNodes = false, Standalone = true, Usage = "/GA", Description = "Zeigt dir, ob du ein GA bist.")]
+        public static async Task GA(CommandContext context)
+        {
+            var Bot = context.Bot;
+            var msg = context.Message;
+
+            await Bot.SendTextMessageAsync(msg.Chat.Id, "Ja, du bist ein Schutzengel.");
+        }
     }
 }
