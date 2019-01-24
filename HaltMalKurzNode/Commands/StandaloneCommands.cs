@@ -10,7 +10,7 @@ namespace HaltMalKurzNode.Commands
 {
     public class StandaloneCommands
     {
-        [Command("/ping", ProcessOnAllNodes = false, Standalone = true, Usage = "/ping", Description = "Pingt den Bot.")]
+        [Command("/ping", ProcessOnAllNodes = false, Standalone = true, Usage = "/ping", Description = "Pingt den Bot.", ExecuteAsync = true)]
         public static async Task Ping(CommandContext context)
         {
             var Bot = context.Bot;

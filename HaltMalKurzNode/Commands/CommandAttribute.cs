@@ -17,7 +17,7 @@ namespace HaltMalKurzNode.Commands
         public string Usage { get; set; }
         public string Description { get; set; }
         public bool ProcessOnAllNodes { get; set; } = true;
-        public bool ExecuteAsync { get; set; } = true;
+        public bool ExecuteAsync { get; set; } = false;
 
         public CommandAttribute(string trigger)
         {
