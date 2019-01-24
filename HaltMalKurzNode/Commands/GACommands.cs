@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ namespace HaltMalKurzNode.Commands
             var Bot = context.Bot;
             var msg = context.Message;
             string query = string.Join(" ", context.Args);
-            using (var conn = new SQLiteConnection("HaltMalKurzContext"))
+            using (var conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["HaltMalKurzContext"].ConnectionString))
             {
                 conn.Open();
                 using (var trans = conn.BeginTransaction())
