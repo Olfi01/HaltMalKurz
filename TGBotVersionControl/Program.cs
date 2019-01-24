@@ -134,7 +134,7 @@ namespace HaltMalKurzControl
                 nodes.ForEach(x => x.Stop());
                 Telegram.Bot.Types.Message cmsg = e.Update.CallbackQuery.Message;
                 string msgText = "Updating...\n";
-                StartNewNode(x => { msgText += x + "\n"; if (msgText.Trim('\n').Trim() != cmsg.Text.Trim()) cmsg = Bot.EditMessageTextAsync(cmsg.Chat.Id, cmsg.MessageId, msgText).Result; });
+                StartNewNode(x => { msgText += x + "\n"; if (msgText.Trim('\n', ' ') != cmsg.Text.Trim()) cmsg = Bot.EditMessageTextAsync(cmsg.Chat.Id, cmsg.MessageId, msgText).Result; });
                 return;
             }
 
@@ -160,7 +160,7 @@ namespace HaltMalKurzControl
                 nodes.ForEach(x => x.Stop());
                 string msgText = "Updating...\n";
                 Telegram.Bot.Types.Message cmsg = Bot.SendTextMessageAsync(e.Update.Message.Chat.Id, msgText).Result;
-                StartNewNode(x => { msgText += x + "\n"; if (msgText.Trim('\n').Trim() != cmsg.Text.Trim()) cmsg = Bot.EditMessageTextAsync(cmsg.Chat.Id, cmsg.MessageId, msgText).Result; });
+                StartNewNode(x => { msgText += x + "\n"; if (msgText.Trim('\n', ' ') != cmsg.Text.Trim()) cmsg = Bot.EditMessageTextAsync(cmsg.Chat.Id, cmsg.MessageId, msgText).Result; });
                 return;
             }
 
