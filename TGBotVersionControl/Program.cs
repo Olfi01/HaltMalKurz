@@ -49,7 +49,9 @@ namespace HaltMalKurzControl
             string input;
             do
             {
+                Console.WriteLine();
                 input = Console.ReadLine();
+                Guid nodeGuid;
                 switch (input.FirstWord())
                 {
                     case "stop":
@@ -58,9 +60,26 @@ namespace HaltMalKurzControl
                             Console.WriteLine("Usage: stop [node-guid]");
                             break;
                         }
-                        var nodeGuid = Guid.Parse(input.Substring(input.IndexOf(" ")).Trim());
+                        if (!Guid.TryParse(input.Substring(input.IndexOf(" ")).Trim(), out nodeGuid))
+                        {
+                            Console.WriteLine("Invalid guid.");
+                            break;
+                        }
                         nodes.ForEach(x => { if (x.Guid.Equals(nodeGuid)) x.Stop(); });
                         Console.WriteLine("Stopping node with guid {0}.", nodeGuid.ToString());
+                        break;
+                    case "version":
+                        if (!input.Contains(" "))
+                        {
+                            Console.WriteLine("Usage: stop [node-guid]");
+                            break;
+                        }
+                        if (!Guid.TryParse(input.Substring(input.IndexOf(" ")).Trim(), out nodeGuid))
+                        {
+                            Console.WriteLine("Invalid guid.");
+                            break;
+                        }
+                        nodes.ForEach(x => { if (x.Guid.Equals(nodeGuid)) Console.WriteLine(x.Version); });
                         break;
                     case "exit":
                         if (nodes.Any(x => !x.Stopped))
@@ -72,14 +91,14 @@ namespace HaltMalKurzControl
                         }
                         break;
                     case "nodes":
-                        nodes.ForEach(x => Console.WriteLine("Node {0} ({1}): Stopped={2}", x.Process.ProcessName, x.Guid.ToString(), x.Stopped));
+                        nodes.RemoveAll(x => x.Stopped);
+                        nodes.ForEach(x => Console.WriteLine("Node {0} ({1}, {3}): Stopped={2}", x.Process.ProcessName, x.Guid.ToString(), x.Stopped, x.Version));
                         if (nodes.Count < 1) Console.WriteLine("No nodes present.");
                         break;
                     default:
                         Console.WriteLine("Command does not exist.");
                         break;
                 }
-                Console.WriteLine();
             } while (input.FirstWord() != "exit");
 
             #region Tidy up

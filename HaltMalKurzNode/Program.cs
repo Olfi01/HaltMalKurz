@@ -21,7 +21,7 @@ namespace HaltMalKurzNode
     {
         private static IpcServer _server;
         private static HaltMalKurzContext db;
-        private const string version = "0.0.1";
+        private const string version = "v0.0.1";
         private static readonly ManualResetEvent stopEvent = new ManualResetEvent(false);
         private static TelegramBotClient Bot;
         private static bool stopping = false;
