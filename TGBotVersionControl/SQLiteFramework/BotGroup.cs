@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace HaltMalKurzControl.SQLiteFramework
 {
+    [Table("groups")]
     public class BotGroup
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]

@@ -4,6 +4,7 @@ using Telegram.Bot.Types;
 
 namespace HaltMalKurzControl.SQLiteFramework
 {
+    [Table("users")]
     public class BotUser
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
