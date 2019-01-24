@@ -15,7 +15,7 @@ namespace HaltMalKurzNode.Commands
         {
             var Bot = context.Bot;
             var msg = context.Message;
-            await Bot.SendTextMessageAsync(msg.Chat.Id, $"Pong!");
+            await Bot.SendTextMessageAsync(msg.Chat.Id, $"Pong!", replyToMessageId: msg.MessageId);
         }
 
         [Command("/start", ProcessOnAllNodes = false, Standalone = true, Usage = "/start", Description = "Startet den Bot.", RequiredContext = CommandAttribute.Context.Private)]
