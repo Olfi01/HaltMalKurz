@@ -15,7 +15,7 @@ namespace HaltMalKurzNode.Commands
         {
             var Bot = context.Bot;
             var msg = context.Message;
-            await Bot.SendTextMessageAsync(msg.Chat.Id, $"Pong!\nTime to receive message: {(DateTime.Now - msg.Date).TotalSeconds} seconds.");
+            await Bot.SendTextMessageAsync(msg.Chat.Id, $"Pong!");
         }
 
         [Command("/start", ProcessOnAllNodes = false, Standalone = true, Usage = "/start", Description = "Startet den Bot.", RequiredContext = CommandAttribute.Context.Private)]
@@ -24,10 +24,17 @@ namespace HaltMalKurzNode.Commands
             var Bot = context.Bot;
             var msg = context.Message;
             var db = context.DB;
+            await Bot.SendTextMessageAsync(msg.Chat.Id, "Hallo! Schön, dass du mit mir spielen willst!");
             if (db.Users.Find(msg.From.Id) == null) db.Users.Add(BotUser.FromUser(msg.From));
             db.Users.Find(msg.From.Id).Update(msg.From);
             db.SaveChanges();
-            await Bot.SendTextMessageAsync(msg.Chat.Id, "Hallo! Schön, dass du mit mir spielen willst!");
+        }
+
+        [Command("/throw", ProcessOnAllNodes = false, Standalone = true, RequiredContext = CommandAttribute.Context.Private)]
+        public static async Task Throw(CommandContext context)
+        {
+            await Task.CompletedTask;
+            throw new Exception("BÄH");
         }
     }
 }

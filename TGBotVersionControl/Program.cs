@@ -71,7 +71,7 @@ namespace HaltMalKurzControl
                     case "version":
                         if (!input.Contains(" "))
                         {
-                            Console.WriteLine("Usage: stop [node-guid]");
+                            Console.WriteLine("Usage: version [node-guid]");
                             break;
                         }
                         if (!Guid.TryParse(input.Substring(input.IndexOf(" ")).Trim(), out nodeGuid))
