@@ -1,21 +1,14 @@
 ﻿using HaltMalKurzControl.Helpers;
 using HaltMalKurzControl.SQLiteFramework;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
-using ZetaIpc.Runtime.Client;
-using ZetaIpc.Runtime.Server;
 
 namespace HaltMalKurzControl
 {
@@ -134,7 +127,12 @@ namespace HaltMalKurzControl
                 nodes.ForEach(x => x.Stop());
                 Telegram.Bot.Types.Message cmsg = e.Update.CallbackQuery.Message;
                 string msgText = "Updating...\n";
-                Task.Run(() => StartNewNode(x => { msgText += x + "\n"; if (msgText.Trim('\n', ' ') != cmsg.Text.Trim()) cmsg = Bot.EditMessageTextAsync(cmsg.Chat.Id, cmsg.MessageId, msgText).Result; }));
+                Task.Run(() => StartNewNode(x =>
+                {
+                    msgText += x + "\n";
+                    if (msgText.Trim('\n', ' ') != cmsg.Text.Trim())
+                        try { cmsg = Bot.EditMessageTextAsync(cmsg.Chat.Id, cmsg.MessageId, msgText).Result; } catch { }
+                }));
                 return;
             }
 
@@ -160,7 +158,12 @@ namespace HaltMalKurzControl
                 nodes.ForEach(x => x.Stop());
                 string msgText = "Updating...\n";
                 Telegram.Bot.Types.Message cmsg = Bot.SendTextMessageAsync(e.Update.Message.Chat.Id, msgText).Result;
-                Task.Run(() => StartNewNode(x => { msgText += x + "\n"; if (msgText.Trim('\n', ' ') != cmsg.Text.Trim()) cmsg = Bot.EditMessageTextAsync(cmsg.Chat.Id, cmsg.MessageId, msgText).Result; }));
+                Task.Run(() => StartNewNode(x =>
+                {
+                    msgText += x + "\n";
+                    if (msgText.Trim('\n', ' ') != cmsg.Text.Trim())
+                        try { cmsg = Bot.EditMessageTextAsync(cmsg.Chat.Id, cmsg.MessageId, msgText).Result; } catch { }
+                }));
                 return;
             }
 
