@@ -139,7 +139,16 @@ namespace HaltMalKurzNode
                             if (cmd.Command.ExecuteAsync)
                                 cmd.Action.Invoke(context);
                             else
-                                cmd.Action.Invoke(context).Wait();
+                            {
+                                try
+                                {
+                                    cmd.Action.Invoke(context).Wait();
+                                }
+                                catch (Exception ex)
+                                {
+                                    Bot.SendTextMessageAsync(267376056, ex.ToString());
+                                }
+                            }
                         }
                     }
                 }

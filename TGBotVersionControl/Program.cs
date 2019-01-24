@@ -91,8 +91,8 @@ namespace HaltMalKurzControl
                         }
                         break;
                     case "nodes":
-                        nodes.RemoveAll(x => x.Stopped);
-                        nodes.ForEach(x => Console.WriteLine("Node {0} ({1}, {3}): Stopped={2}", x.Process.ProcessName, x.Guid.ToString(), x.Stopped, x.Version));
+                        nodes.RemoveAll(x => x.Stopped && !x.Errored);
+                        nodes.ForEach(x => Console.WriteLine("Node {0} ({1}, {3}): Stopped={2}, Errored={4}", x.Process.ProcessName, x.Guid.ToString(), x.Stopped, x.Version, x.Errored));
                         if (nodes.Count < 1) Console.WriteLine("No nodes present.");
                         break;
                     default:

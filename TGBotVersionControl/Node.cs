@@ -21,6 +21,8 @@ namespace HaltMalKurzControl
         private readonly ManualResetEvent clientInitialized = new ManualResetEvent(false);
         private string EventHandleName { get => Guid.ToString() + ":started"; }
         public bool Stopped { get; set; } = false;
+        public bool Errored { get; set; } = false;
+        public Exception Exception { get; set; }
         public string Version { get { clientInitialized.WaitOne(); return SendMessage(IpcMessage.GetVersionMessage); } }
 
         public Node(ProcessStartInfo psi, Guid guid, string token)
@@ -29,6 +31,7 @@ namespace HaltMalKurzControl
             clientPort = FreePortHelper.GetFreePort();
             psi.Arguments = $"{clientPort} {EventHandleName} {token}";
             Process = Process.Start(psi);
+            Task.Run(() => { try { Process.WaitForExit(); Stopped = true; } catch (Exception ex) { Errored = true; Stopped = true; Exception = ex; } });
             Task.Run((Action)StartClient);
         }
 
@@ -43,13 +46,22 @@ namespace HaltMalKurzControl
         public string SendMessage(IpcMessage message)
         {
             clientInitialized.WaitOne();
-            return _client.Send(message.ToString());
+            try
+            {
+                return _client.Send(message.ToString());
+            }
+            catch (Exception ex)
+            {
+                Exception = ex;
+                Errored = true;
+                Stopped = true;
+                return null;
+            }
         }
 
         public void Stop()
         {
             SendMessage(IpcMessage.StopMessage);
-            Task.Run(() => { Process.WaitForExit(); Stopped = true; });
         }
     }
 }
