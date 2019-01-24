@@ -41,8 +41,9 @@ namespace HaltMalKurzControl
         public static IpcMessage StopMessage => new IpcMessage("stop");
         public bool IsStopMessage() => Type == TcpMessageType.Command && Command == "stop";
 
-        public static IpcMessage StoppedMessage => new IpcMessage("stopped");
-        public bool IsStoppedMessage() => Type == TcpMessageType.Command && Command == "stopped";
+        public static IpcMessage GetVersionMessage => new IpcMessage("version");
+
+        public bool IsGetVersionMessage() => Type == TcpMessageType.Command && Command == "version";
 
         public enum TcpMessageType
         {

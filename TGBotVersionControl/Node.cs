@@ -21,12 +21,13 @@ namespace HaltMalKurzControl
         private readonly ManualResetEvent clientInitialized = new ManualResetEvent(false);
         private string EventHandleName { get => Guid.ToString() + ":started"; }
         public bool Stopped { get; set; } = false;
+        public string Version { get { clientInitialized.WaitOne(); return SendMessage(IpcMessage.GetVersionMessage); } }
 
-        public Node(ProcessStartInfo psi)
+        public Node(ProcessStartInfo psi, Guid guid, string token)
         {
-            Guid = Guid.NewGuid();
+            Guid = guid;
             clientPort = FreePortHelper.GetFreePort();
-            psi.Arguments = $"{clientPort} {EventHandleName}";
+            psi.Arguments = $"{clientPort} {EventHandleName} {token}";
             Process = Process.Start(psi);
             Task.Run((Action)StartClient);
         }
