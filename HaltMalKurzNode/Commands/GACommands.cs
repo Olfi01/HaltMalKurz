@@ -28,6 +28,7 @@ namespace HaltMalKurzNode.Commands
                             if (!reader.HasRows)
                             {
                                 await Bot.SendTextMessageAsync(msg.Chat.Id, $"Query finished. {reader.RecordsAffected} records affected.", replyToMessageId: msg.MessageId);
+                                trans.Commit();
                                 return;
                             }
                             else
