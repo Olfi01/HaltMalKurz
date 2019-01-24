@@ -1,2 +1,2 @@
-﻿@echo OFF
+@echo OFF
 git clone https://github.com/Olfi01/HaltMalKurz

@@ -17,6 +17,9 @@ namespace HaltMalKurzControl
         public string Command { get; set; }
 
         public TcpMessageType Type { get => Update != null ? TcpMessageType.Update : TcpMessageType.Command; }
+        
+        [JsonConstructor]
+        public IpcMessage() { }
 
         public IpcMessage(Update update)
         {

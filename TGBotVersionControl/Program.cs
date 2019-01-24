@@ -1,5 +1,6 @@
 ﻿using HaltMalKurzControl.Helpers;
 using HaltMalKurzControl.SQLiteFramework;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -121,7 +122,7 @@ namespace HaltMalKurzControl
 
         private static void StartNewNode(Action<string> outputHandler)
         {
-            ProcessStartInfo psi = new ProcessStartInfo("first.cmd")
+            ProcessStartInfo psi = new ProcessStartInfo(Path.Combine(Environment.CurrentDirectory, "first.cmd"))
             {
                 WorkingDirectory = repoContainingDir,
                 UseShellExecute = false
@@ -130,7 +131,7 @@ namespace HaltMalKurzControl
 
             outputHandler.Invoke("Building...");
             outputHandler.Invoke("");
-            psi = new ProcessStartInfo("build.cmd")
+            psi = new ProcessStartInfo(Path.Combine(Environment.CurrentDirectory, "build.cmd"))
             {
                 WorkingDirectory = repoContainingDir,
                 UseShellExecute = false,
@@ -170,6 +171,7 @@ namespace HaltMalKurzControl
 
         private static void PrintAndContinue(Task<string> line, StreamReader standardOutput, Action<string> outputHandler)
         {
+            if (line.Result == null) return;
             outputHandler.Invoke(line.Result);
             standardOutput.ReadLineAsync().ContinueWith(x => PrintAndContinue(x, standardOutput, outputHandler));
         }

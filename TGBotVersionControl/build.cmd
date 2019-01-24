@@ -1,4 +1,4 @@
-﻿@echo OFF
+@echo OFF
 cd HaltMalKurz
 git pull
 nuget restore
