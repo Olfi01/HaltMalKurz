@@ -138,6 +138,17 @@ namespace HaltMalKurzControl
                 return;
             }
 
+            if (e.Update.Type == UpdateType.CallbackQuery && e.Update.CallbackQuery.Data == "dontUpdate")
+            {
+                if (!e.Update.CallbackQuery.From.IsGlobalAdmin(db))
+                {
+                    Bot.AnswerCallbackQueryAsync(e.Update.CallbackQuery.Id, "You are not authorized to do this!");
+                    return;
+                }
+
+                Bot.EditMessageReplyMarkupAsync(e.Update.CallbackQuery.Message.Chat.Id, e.Update.CallbackQuery.Message.MessageId);
+            }
+
             if (e.Update.Type == UpdateType.Message && e.Update.Message.Text == "/update")
             {
                 if (!e.Update.Message.From.IsGlobalAdmin(db))
@@ -149,7 +160,7 @@ namespace HaltMalKurzControl
                 nodes.ForEach(x => x.Stop());
                 string msgText = "Updating...\n";
                 Telegram.Bot.Types.Message cmsg = Bot.SendTextMessageAsync(e.Update.Message.Chat.Id, msgText).Result;
-                StartNewNode(x => { msgText += x + "\n"; Bot.EditMessageTextAsync(cmsg.Chat.Id, cmsg.MessageId, msgText).Wait(); });
+                StartNewNode(x => { msgText += x + "\n"; if (msgText.Trim('\n').Trim() != cmsg.Text.Trim()) cmsg = Bot.EditMessageTextAsync(cmsg.Chat.Id, cmsg.MessageId, msgText).Result; });
                 return;
             }
 
