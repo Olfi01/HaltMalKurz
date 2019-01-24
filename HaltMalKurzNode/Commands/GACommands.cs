@@ -17,6 +17,7 @@ namespace HaltMalKurzNode.Commands
             string query = string.Join(" ", context.Args);
             using (var conn = new SQLiteConnection("HaltMalKurzContext"))
             {
+                conn.Open();
                 using (var trans = conn.BeginTransaction())
                 {
                     using (var comm = new SQLiteCommand(query, conn, trans))
@@ -49,6 +50,7 @@ namespace HaltMalKurzNode.Commands
                     }
                     trans.Commit();
                 }
+                conn.Close();
             }
         }
     }
