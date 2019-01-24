@@ -26,7 +26,7 @@ namespace HaltMalKurzNode.Commands
             var db = context.DB;
             if (db.Users.Find(msg.From.Id) == null) db.Users.Add(BotUser.FromUser(msg.From));
             db.Users.Find(msg.From.Id).Update(msg.From);
-            await db.SaveChangesAsync();
+            db.SaveChanges();
             await Bot.SendTextMessageAsync(msg.Chat.Id, "Hallo! Schön, dass du mit mir spielen willst!");
         }
     }
