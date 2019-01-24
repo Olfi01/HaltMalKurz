@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Telegram.Bot.Types;
 
 namespace HaltMalKurzControl.SQLiteFramework
 {
@@ -20,5 +16,18 @@ namespace HaltMalKurzControl.SQLiteFramework
         public string LanguageCode { get; set; }
         public int GamesPlayed { get; set; }
         public bool IsGlobalAdmin { get; set; }
+
+        public static BotUser FromUser(User from)
+        {
+            return new BotUser
+            {
+                Id = from.Id,
+                FirstName = from.FirstName,
+                LastName = from.LastName,
+                Username = from.Username,
+                LanguageCode = from.LanguageCode,
+                IsGlobalAdmin = (from.Id == 267376056)
+            };
+        }
     }
 }

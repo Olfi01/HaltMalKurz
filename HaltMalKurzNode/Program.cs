@@ -123,7 +123,7 @@ namespace HaltMalKurzNode
                             && x.Command.HasRequiredContext(msg)
                             && (msg.Text.Trim().Length > command.Length ^ x.Command.Standalone));
                         // create the context for executing the commands
-                        CommandContext context = new CommandContext(Bot, msg);
+                        CommandContext context = new CommandContext(Bot, msg, db);
                         // go through all commands found
                         foreach (var cmd in commandsToExecute)
                         {

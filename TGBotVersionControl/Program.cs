@@ -131,8 +131,25 @@ namespace HaltMalKurzControl
                     return;
                 }
 
-                // update routine here
+                nodes.ForEach(x => x.Stop());
+                Telegram.Bot.Types.Message cmsg = e.Update.CallbackQuery.Message;
+                string msgText = "Updating...\n";
+                StartNewNode(x => { msgText += x + "\n"; Bot.EditMessageTextAsync(cmsg.Chat.Id, cmsg.MessageId, msgText).Wait(); });
+                return;
+            }
 
+            if (e.Update.Type == UpdateType.Message && e.Update.Message.Text == "/update")
+            {
+                if (!e.Update.Message.From.IsGlobalAdmin(db))
+                {
+                    Bot.SendTextMessageAsync(e.Update.Message.Chat.Id, "You are not authorized to do this!");
+                    return;
+                }
+
+                nodes.ForEach(x => x.Stop());
+                string msgText = "Updating...\n";
+                Telegram.Bot.Types.Message cmsg = Bot.SendTextMessageAsync(e.Update.Message.Chat.Id, msgText).Result;
+                StartNewNode(x => { msgText += x + "\n"; Bot.EditMessageTextAsync(cmsg.Chat.Id, cmsg.MessageId, msgText).Wait(); });
                 return;
             }
 

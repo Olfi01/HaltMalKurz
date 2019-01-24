@@ -45,5 +45,12 @@ namespace HaltMalKurzControl.Helpers
         }
 
         public static bool IsGroup(this Chat chat) => chat.Type == ChatType.Group || chat.Type == ChatType.Supergroup;
+
+        public static void Update(this BotUser botUser, User user)
+        {
+            botUser.FirstName = user.FirstName;
+            botUser.LastName = user.LastName;
+            botUser.Username = user.Username;
+        }
     }
 }
