@@ -12,7 +12,7 @@ namespace HaltMalKurzNode.Commands
         public string Trigger { get; }
         public bool Standalone { get; set; } = true;
         public bool RequiresAdmin { get; set; } = false;
-        public bool RequiresGlobalAdmmin { get; set; } = false;
+        public bool RequiresGlobalAdmin { get; set; } = false;
         public Context RequiredContext { get; set; } = Context.All;
         public string Usage { get; set; }
         public string Description { get; set; }

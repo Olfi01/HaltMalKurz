@@ -27,6 +27,7 @@ namespace HaltMalKurzNode
         private static bool stopping = false;
         private static List<Game> games = new List<Game>();
         private static readonly List<BotCommand> commands = new List<BotCommand>();
+        private static string botUsername;
 
         static void Main(string[] args)
         {
@@ -39,6 +40,7 @@ namespace HaltMalKurzNode
             _server.ReceivedRequest += ServerReceivedRequest;
             _server.Start(port);
             Bot = new TelegramBotClient(botToken);
+            botUsername = Bot.GetMeAsync().Result.Username;
             eventWaitHandle.Set();
 
             InitCommands();
@@ -52,7 +54,7 @@ namespace HaltMalKurzNode
 
         private static void InitCommands()
         {
-            Type[] classesToSearch = { typeof(StandaloneCommands) };
+            Type[] classesToSearch = { typeof(StandaloneCommands), typeof(GACommands) };
 
             foreach (Type t in classesToSearch)
             {
@@ -117,7 +119,7 @@ namespace HaltMalKurzNode
                         List<BotCommand> commandsToExecute;
                         // checks for all the prerequisites
                         commandsToExecute = commands.FindAll(x =>
-                            x.Command.Trigger == commandText
+                            (x.Command.Trigger == commandText || x.Command.Trigger + "@" + botUsername == commandText)
                             && x.Command.Standalone
                             && (x.Command.ProcessOnAllNodes || !stopping)
                             && x.Command.HasRequiredContext(msg)
@@ -134,7 +136,7 @@ namespace HaltMalKurzNode
                                 if (chatMember.Status != ChatMemberStatus.Administrator && chatMember.Status != ChatMemberStatus.Creator && !msg.From.IsGlobalAdmin(db)) continue;
                             }
                             // if global admin is required, check whether the person issueing the command is global admin
-                            if (cmd.Command.RequiresGlobalAdmmin && !msg.From.IsGlobalAdmin(db)) continue;
+                            if (cmd.Command.RequiresGlobalAdmin && !msg.From.IsGlobalAdmin(db)) continue;
                             // either execute the command synchronously or asynchronously, depending on configuration
                             if (cmd.Command.ExecuteAsync)
                                 cmd.Action.Invoke(context);

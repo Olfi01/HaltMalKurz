@@ -76,6 +76,7 @@
     <Compile Include="Commands\BotCommand.cs" />
     <Compile Include="Commands\CommandAttribute.cs" />
     <Compile Include="Commands\CommandContext.cs" />
+    <Compile Include="Commands\GACommands.cs" />
     <Compile Include="Commands\StandaloneCommands.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Helpers\Extensions.cs" />
