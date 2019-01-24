@@ -53,8 +53,6 @@ namespace HaltMalKurzControl
             catch (Exception ex)
             {
                 Exception = ex;
-                Errored = true;
-                Stopped = true;
                 return null;
             }
         }
