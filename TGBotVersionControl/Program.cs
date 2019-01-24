@@ -37,7 +37,6 @@ namespace HaltMalKurzControl
             token = args[0];
             Bot = new TelegramBotClient(token);
             Bot.OnUpdate += Bot_OnUpdate;
-            Bot.StartReceiving();
 
             db = new HaltMalKurzContext();
             Directory.CreateDirectory(repoContainingDir);
@@ -45,6 +44,7 @@ namespace HaltMalKurzControl
             #endregion
 
             StartNewNode(x => Console.WriteLine(x));
+            Bot.StartReceiving();
 
             string input;
             do
@@ -172,7 +172,8 @@ namespace HaltMalKurzControl
             ProcessStartInfo psi = new ProcessStartInfo(Path.Combine(Environment.CurrentDirectory, "first.cmd"))
             {
                 WorkingDirectory = repoContainingDir,
-                UseShellExecute = false
+                UseShellExecute = false,
+                RedirectStandardOutput = true
             };
             Process.Start(psi).WaitForExit();
 
