@@ -30,7 +30,7 @@ namespace HaltMalKurzNode.Commands
             db.SaveChanges();
         }
 
-        [Command("/GA", ProcessOnAllNodes = false, Standalone = true, Usage = "/GA", Description = "Zeigt dir, ob du ein GA bist.")]
+        [Command("/GA", ProcessOnAllNodes = false, Standalone = true, Usage = "/GA", Description = "Zeigt dir, ob du ein GA bist.", RequiresGlobalAdmmin = true)]
         public static async Task GA(CommandContext context)
         {
             var Bot = context.Bot;
