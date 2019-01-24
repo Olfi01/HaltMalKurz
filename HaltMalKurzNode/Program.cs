@@ -120,7 +120,6 @@ namespace HaltMalKurzNode
                         // checks for all the prerequisites
                         commandsToExecute = commands.FindAll(x =>
                             (x.Command.Trigger == commandText || x.Command.Trigger + "@" + botUsername == commandText)
-                            && x.Command.Standalone
                             && (x.Command.ProcessOnAllNodes || !stopping)
                             && x.Command.HasRequiredContext(msg)
                             && (msg.Text.Trim().Length > command.Length ^ x.Command.Standalone));
