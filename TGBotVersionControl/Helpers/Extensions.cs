@@ -13,7 +13,12 @@ namespace HaltMalKurzControl.Helpers
     {
         public static string FirstWord(this string str) => str.Contains(" ") ? str.Remove(str.IndexOf(" ")) : str;
 
-        public static bool IsGlobalAdmin(this User user, HaltMalKurzContext db) => db.Users.Any(x => x.Id == user.Id) && db.Users.Find(user.Id).IsGlobalAdmin;
+        public static bool IsGlobalAdmin(this User user, HaltMalKurzContext db)
+        {
+            if (!db.Users.Any(x => x.Id == user.Id)) db.Users.Add(BotUser.FromUser(user));
+            db.SaveChanges();
+            return db.Users.Find(user.Id).IsGlobalAdmin;
+        }
 
         public static bool TryFind<T>(this IEnumerable<T> list, Func<T, bool> predicate, out T result)
         {
