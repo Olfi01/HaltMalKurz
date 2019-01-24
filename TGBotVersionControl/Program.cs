@@ -72,7 +72,7 @@ namespace HaltMalKurzControl
                         }
                         break;
                     case "nodes":
-                        nodes.ForEach(x => Console.WriteLine("Node {0} ({1}): Stopped={2}", x.Process.ToString(), x.Guid.ToString(), x.Stopped));
+                        nodes.ForEach(x => Console.WriteLine("Node {0} ({1}): Stopped={2}", x.Process.ProcessName, x.Guid.ToString(), x.Stopped));
                         if (nodes.Count < 1) Console.WriteLine("No nodes present.");
                         break;
                     default:
@@ -129,8 +129,8 @@ namespace HaltMalKurzControl
             };
             Process.Start(psi).WaitForExit();
 
-            outputHandler.Invoke("Building...");
             outputHandler.Invoke("");
+            outputHandler.Invoke("Building...");
             psi = new ProcessStartInfo(Path.Combine(Environment.CurrentDirectory, "build.cmd"))
             {
                 WorkingDirectory = repoContainingDir,
@@ -141,8 +141,8 @@ namespace HaltMalKurzControl
             buildProcess.StandardOutput.ReadLineAsync().ContinueWith(x => PrintAndContinue(x, buildProcess.StandardOutput, outputHandler));
             buildProcess.WaitForExit();
 
-            outputHandler.Invoke("Copying to directory...");
             outputHandler.Invoke("");
+            outputHandler.Invoke("Copying to directory...");
             Guid guid = Guid.NewGuid();
             var targetDir = Directory.CreateDirectory(Path.Combine(nodesDir, guid.ToString()));
             CopyDirectory(Directory.CreateDirectory(singleNodeDir), targetDir);
@@ -155,6 +155,9 @@ namespace HaltMalKurzControl
             };
 
             nodes.Add(new Node(psi, guid, token));
+
+            outputHandler.Invoke("");
+            outputHandler.Invoke($"Node {guid.ToString()} started.");
         }
 
         private static void CopyDirectory(DirectoryInfo source, DirectoryInfo target)

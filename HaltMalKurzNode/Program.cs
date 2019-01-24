@@ -45,7 +45,7 @@ namespace HaltMalKurzNode
 
             stopEvent.WaitOne();
             stopping = true;
-            while (games.Count > 0) Thread.Sleep(500);
+            do Thread.Sleep(500); while (games.Count > 0);
 
             Environment.Exit(0);
         }
