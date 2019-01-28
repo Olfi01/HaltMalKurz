@@ -12,7 +12,7 @@ namespace HaltMalKurzControl.SQLiteFramework
         [Required]
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string FullName { get => string.Join(" ", FirstName, LastName); }
+        public string FullName { get => string.Join(" ", FirstName, LastName).Trim(); }
         public string Username { get; set; }
         public string LanguageCode { get; set; }
         public int GamesPlayed { get; set; }
