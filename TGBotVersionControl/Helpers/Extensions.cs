@@ -68,7 +68,7 @@ namespace HaltMalKurzControl.Helpers
 
         public static string FullName(this User user)
         {
-            return string.Join(" ", user.FirstName, user.LastName);
+            return string.Join(" ", user.FirstName, user.LastName).Trim();
         }
     }
 }
