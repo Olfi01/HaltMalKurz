@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HaltMalKurzControl.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SQLite;
@@ -10,6 +11,7 @@ namespace HaltMalKurzNode.Commands
 {
     public class GACommands
     {
+        #region SQLite
         [Command("/sqlite", Usage = "/sqlite [query]", Description = "Executes an sqlite query against the database.", ProcessOnAllNodes = false, RequiresGlobalAdmin = true, Standalone = false)]
         public static async Task SQLite(CommandContext context)
         {
@@ -54,6 +56,24 @@ namespace HaltMalKurzNode.Commands
                 }
                 conn.Close();
             }
+        }
+        #endregion
+
+        [Command("/promote", Description = "Promotes someone to GA.", ProcessOnAllNodes = false, RequiresGlobalAdmin = true, Standalone = true, Usage = "/promote (reply to user)")]
+        public static async Task Promote(CommandContext context)
+        {
+            var Bot = context.Bot;
+            var msg = context.Message;
+            var db = context.DB;
+            if (msg.ReplyToMessage == null) return;
+            var toPromote = msg.ReplyToMessage.From;
+            if (toPromote.IsGlobalAdmin(db))
+            {
+                await Bot.SendTextMessageAsync(msg.Chat.Id, "Diese Person ist bereits GA!");
+                return;
+            }
+            toPromote.FindOrCreateBotUser(db).IsGlobalAdmin = true;
+            await Bot.SendTextMessageAsync(msg.Chat.Id, $"{ toPromote.FullName() } wurde zum GA ernannt!");
         }
     }
 }

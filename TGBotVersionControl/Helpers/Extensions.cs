@@ -1,9 +1,8 @@
 ﻿using HaltMalKurzControl.SQLiteFramework;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
@@ -13,12 +12,7 @@ namespace HaltMalKurzControl.Helpers
     {
         public static string FirstWord(this string str) => str.Contains(" ") ? str.Remove(str.IndexOf(" ")) : str;
 
-        public static bool IsGlobalAdmin(this User user, HaltMalKurzContext db)
-        {
-            if (!db.Users.Any(x => x.Id == user.Id)) db.Users.Add(BotUser.FromUser(user));
-            db.SaveChanges();
-            return db.Users.Find(user.Id).IsGlobalAdmin;
-        }
+        public static bool IsGlobalAdmin(this User user, HaltMalKurzContext db) => user.FindOrCreateBotUser(db).IsGlobalAdmin;
 
         public static bool TryFind<T>(this IEnumerable<T> list, Func<T, bool> predicate, out T result)
         {
@@ -56,6 +50,25 @@ namespace HaltMalKurzControl.Helpers
             botUser.FirstName = user.FirstName;
             botUser.LastName = user.LastName;
             botUser.Username = user.Username;
+        }
+
+        public static BotUser FindOrCreateBotUser(this User user, HaltMalKurzContext db)
+        {
+            if (db.Users.Any(x => x.Id == user.Id))
+            {
+                return db.Users.Find(user.Id);
+            }
+            else
+            {
+                var added = db.Users.Add(BotUser.FromUser(user));
+                db.SaveChanges();
+                return added;
+            }
+        }
+
+        public static string FullName(this User user)
+        {
+            return string.Join(" ", user.FirstName, user.LastName);
         }
     }
 }
