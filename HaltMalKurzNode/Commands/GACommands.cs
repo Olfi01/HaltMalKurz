@@ -73,6 +73,7 @@ namespace HaltMalKurzNode.Commands
                 return;
             }
             toPromote.FindOrCreateBotUser(db).IsGlobalAdmin = true;
+            await db.SaveChangesAsync();
             await Bot.SendTextMessageAsync(msg.Chat.Id, $"{ toPromote.FullName() } wurde zum GA ernannt!");
         }
     }
